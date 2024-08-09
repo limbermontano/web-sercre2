@@ -57,17 +57,16 @@
           cellspacing="0"
         >
         <thead>
-          <tr>
-            
+          <tr style="text-align: center;">
             <th>Usuario</th>
             <th>E-mail</th>
             <th>Nivel de acceso</th>
-            <th style="text-align: right;">Acciones</th>
             
+            <th style="text-align: right;">Acciones</th>
           </tr>
         </thead>
 
-        <tbody>
+        <tbody style="text-align: center;">
           {% for usuario in usuarios %}
         
             {% if usuario.is_superuser == 1 %}
@@ -75,7 +74,7 @@
                 <td>{{usuario.username}}</td>
                 <td>{{usuario.email}}</td>
                 <td>Super usuario</td>
-
+                
                 <td style="float: right">
                   <a
                     class="btn btn-primary btn-sm"
@@ -96,6 +95,7 @@
                 <td>{{usuario.username}}</td>
                 <td>{{usuario.email}}</td>
                 <td>Usuario</td>
+                
                 <td style="float: right">
                   <a class="btn btn-primary btn-sm" href="{% url 'usuEditar' usuario.id %}"><i class="fas fa-pen"></i></a>
                   |

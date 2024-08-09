@@ -31,23 +31,19 @@ def base(resquest):
     return render(resquest, 'index.html')
 def user_login(resquest):
     if resquest.method == 'POST':
-        
         username = resquest.POST.get('username')
         password = resquest.POST.get('password')
-        
         user = authenticate(resquest, username=username, password=password)
-        
         if  user is not None:
             login(resquest, user)
             return redirect('base')  # Redirigir a la página de perfil o cualquier otra página después del inicio de sesión
         else:
             return render(resquest, 'registration/login.html')
-
     return render(resquest, 'registration/login.html')
 
 def logout_view(resquest):
     logout(resquest)
-    return render(resquest, 'registration/login_logout.html')
+    return redirect('iniciar')
 
 @login_required
 def areLista(resquest):
@@ -61,7 +57,7 @@ def areLista(resquest):
             Q(nombre_are__icontains=busqueda)
         ).distinct()
 
-    elementos_por_pagina = 15
+    elementos_por_pagina = 12
     paginator = Paginator(areas, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
     try:
@@ -141,7 +137,7 @@ def cargLista(resquest):
         messages.error(resquest, "No tienes permiso para esta opcion, ponte en contacto con el administrador (TI).")
         return redirect('grafana_etapas') 
     # Obtener solo los nombres distintos de cargos activos
-    cargos = Cargo.objects.filter(estado_carg=1).values('nombre_carg').distinct()
+    cargos = Cargo.objects.filter(estado_carg=1)
     busqueda = resquest.GET.get("buscar")
 
     if busqueda:
@@ -149,7 +145,7 @@ def cargLista(resquest):
             Q(nombre_carg__icontains=busqueda)
         ).distinct()
 
-    elementos_por_pagina = 15
+    elementos_por_pagina = 12
     paginator = Paginator(cargos, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -160,7 +156,7 @@ def cargLista(resquest):
     except EmptyPage:
         cargos = paginator.page(paginator.num_pages)
 
-    return render(resquest, 'cargo/lista.html', {'cargos':cargos})
+    return render(resquest,'cargo/lista.html', {'cargos':cargos})
 def cargCrear(resquest):
     return render(resquest, 'cargo/crear.html')
 def cargGuardar(resquest):
@@ -228,7 +224,7 @@ def docLista(resquest):
             documentos = Documento.objects.filter(
                 Q(nombre_doc__icontains=busqueda)
             ).distinct()
-        elementos_por_pagina = 10
+        elementos_por_pagina = 12
         paginator = Paginator(documentos, elementos_por_pagina)
         page = resquest.GET.get("page", 1)
 
@@ -298,7 +294,7 @@ def estLista(resquest):
         estudios = Estudio.objects.filter(
             Q(nombre_est__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 15
+    elementos_por_pagina = 12
     paginator = Paginator(estudios, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -364,7 +360,7 @@ def profLista(resquest):
         profesiones = Profesion.objects.filter(
             Q(nombre_prof__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 15
+    elementos_por_pagina = 12
     paginator = Paginator(profesiones, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -446,7 +442,7 @@ def perLista(resquest):
             Q(direccion_per__icontains=busqueda) 
             
         ).distinct()
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(personas, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -556,6 +552,38 @@ def perEliminar(resquest, id):
     persona.save()
     messages.success(resquest, " REGISTRO ELIMINADO ")
     return redirect('perLista')
+def perActivar(resquest, id):
+    persona = Persona.objects.get(id_per=id)
+    persona.estado_per = 1
+    persona.save()
+    messages.success(resquest, " REGISTRO ACTIVADO ")
+    return redirect('perLista')
+def perLista_noactivo(resquest):
+    if not resquest.user.has_perm('admRrhh.view_persona'):
+        messages.error(resquest, "No tienes permiso para esta opcion, ponte en contacto con el administrador (TI).")
+        return redirect('grafana_etapas') 
+
+    personas = Persona.objects.filter(estado_per = 0)
+    busqueda = resquest.GET.get("buscar")
+    if busqueda:
+        personas = Persona.objects.filter(
+            Q(nombre_per__icontains=busqueda)|
+            Q(apellidoP_per__icontains=busqueda)|
+            Q(apellidoM_per__icontains=busqueda)| 
+            Q(direccion_per__icontains=busqueda) 
+            
+        ).distinct()
+    elementos_por_pagina = 12
+    paginator = Paginator(personas, elementos_por_pagina)
+    page = resquest.GET.get("page", 1)
+
+    try:
+        personas = paginator.page(page)
+    except PageNotAnInteger:
+        personas = paginator.page(1)
+    except EmptyPage:
+        personas = paginator.page(paginator.num_pages)
+    return render(resquest, 'persona/listaPers_inactiva.html', {'personas': personas})
 # PERSONAL/////////////////////////////////////////////////////////
 @login_required
 def perlLista(resquest):
@@ -581,7 +609,7 @@ def perlLista(resquest):
 
         ).distinct()
     
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(personales, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -717,7 +745,7 @@ def zonLista(resquest):
         zonas = Zona.objects.filter(
             Q(nombre_zon__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(zonas, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -784,7 +812,7 @@ def fisLista(resquest):
             Q(nombre_fis__icontains=busqueda)|
             Q(apellidoP_fis__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(fiscales, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -863,7 +891,7 @@ def proyLista(resquest):
             Q(fiscal_proy__nombre_fis__icontains=busqueda)
             
         ).distinct()
-    elementos_por_pagina = 15
+    elementos_por_pagina = 12
     paginator = Paginator(proyectos, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
     try:
@@ -974,7 +1002,7 @@ def asigLista(resquest):
             Q(personal_asig__persona_perl__nombre_per__icontains=busqueda)|
             Q(personal_asig__cargo_perl__nombre_carg__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(asignaciones, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
     try:
@@ -1103,7 +1131,7 @@ def parLista(resquest):
         parentescos = Parentesco.objects.filter(
             Q(nombre_par__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 15
+    elementos_por_pagina = 12
     paginator = Paginator(parentescos, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
     try:
@@ -1142,7 +1170,7 @@ def parActualizar(resquest, id):
         if Parentesco.objects.exclude(id_par=id).filter(nombre_par__iexact=nuevo_nombre).exists():
             messages.error(resquest, "Ya existe un dato con este nombre.")
             return redirect('parEditar', parentescos.id_par)
-        parentescos.nombre_prof = nuevo_nombre.capitalize()
+        parentescos.nombre_par = nuevo_nombre.capitalize()
         parentescos.save()
         messages.success(resquest, "Se actualizó correctamente el dato.")
         return redirect('parLista')
@@ -1169,7 +1197,7 @@ def famLista(resquest):
             Q(nombre_fam__icontains=busqueda) |
             Q(personal_fam__persona_perl__nombre_per__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(familiares, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
     try:
@@ -1216,6 +1244,9 @@ def famActualizar(resquest, id):
     nota = resquest.POST["nota_fam"]
     idpersona = resquest.POST["personal_fam"]
     idparentesco = resquest.POST["parentesco_fam"]
+    if Familiar.objects.exclude(id_fam=id).filter(nombre_fam__iexact=nombre).exists():
+            messages.error(resquest, "Ya existe un dato con este nombre.")
+            return redirect('famEditar', familiar.id_fam)
     familiar = Familiar.objects.get(id_fam=id)
     familiar.nombre_fam=nombre.title()
     familiar.apellidoP_fam=apellidoP.title()
@@ -1247,7 +1278,7 @@ def envLista(resquest):
             Q(proyecto_env__nombre_proy__icontains=busqueda)
             
         ).distinct()
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(envios, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -1357,7 +1388,7 @@ def ordLista(resquest):
             Q(numero_ord__icontains=busqueda)|
             Q(proyecto_ord__nombre_proy__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 15
+    elementos_por_pagina = 12
     paginator = Paginator(ordenes, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
 
@@ -1433,7 +1464,7 @@ def usuLista(resquest):
             usuarios = User.objects.filter(
                 Q(username__icontains=busqueda)
             ).distinct()
-        elementos_por_pagina = 10
+        elementos_por_pagina = 12
         paginator = Paginator(usuarios, elementos_por_pagina)
         page = resquest.GET.get("page", 1)
         try:
@@ -1445,9 +1476,26 @@ def usuLista(resquest):
     return render(resquest, 'usuario/lista.html', {'usuarios': usuarios})
 def usuCrear(resquest):
     personas = Persona.objects.all()
+    usuarios = User.objects.all()
     proyectos = Proyecto.objects.all()
-    personales= Personal.objects.filter(area_perl__nombre_are__in=['Administracion','Diseño','Contabilidad','Almacen'])
-    return render(resquest, 'usuario/crear.html',{'personales': personales,'personas': personas, 'proyectos': proyectos})
+    personales = Personal.objects.filter(area_perl__nombre_are__in=['Administracion', 'Diseño', 'Contabilidad', 'Almacen'])
+
+    resultados = []
+    for personal in personales:
+        nombre_completo = f"{personal.persona_perl.nombre_per} {personal.persona_perl.apellidoP_per}"
+        if not usuarios.filter(username=nombre_completo).exists():
+            resultados.append(personal)
+
+    # Puedes procesar los resultados aquí según sea necesario
+    for resultado in resultados:
+        print(f"Nombre: {resultado.persona_perl.nombre_per}, Apellido: {resultado.persona_perl.apellidoP_per}")
+
+    return render(resquest, 'usuario/crear.html', {
+        'personales': personales,
+        'personas': personas,
+        'proyectos': proyectos,
+        'resultados': resultados
+    })
 def usuGuardar(resquest):
     if resquest.method == 'POST':
         nombre = resquest.POST["persona_usu"]
@@ -1575,7 +1623,7 @@ def userPermLista(resquest):
             Q(username__icontains=busqueda)
         ).distinct()
     
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(permisos, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
     try:
@@ -1625,12 +1673,19 @@ def rolLista(resquest):
         return redirect('grafana_etapas') 
     grupos_y_permisos = obtener_grupos_y_permisos()
     roles =  Group.objects.all()
+    roles_con_permisos = []
+    for grupo in roles:
+        permisos = grupos_y_permisos.get(grupo, [])
+        roles_con_permisos.append({
+            'grupo': grupo,
+            'permisos': permisos
+    })
     busqueda = resquest.GET.get("buscar")
     if busqueda:
         roles =  Group.objects.filter(
             Q(name__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 15
+    elementos_por_pagina = 12
     paginator = Paginator(roles, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
     try:
@@ -1641,7 +1696,7 @@ def rolLista(resquest):
     except EmptyPage:
         
         roles = paginator.page(paginator.num_pages)
-    return render(resquest, 'rol/lista.html', {'grupos_y_permisos': grupos_y_permisos})
+    return render(resquest, 'rol/lista.html', {'roles_con_permisos': roles_con_permisos})
 def rolCrear(resquest):
     return render(resquest, 'rol/crear.html')
 def rolGuardar(resquest):
@@ -1820,7 +1875,7 @@ def repenvio(resquest):
         envios = Envio.objects.filter(
             Q(proyecto_env__icontains=busqueda)
         ).distinct()
-    elementos_por_pagina = 10
+    elementos_por_pagina = 12
     paginator = Paginator(envios, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
     try:
@@ -1830,30 +1885,27 @@ def repenvio(resquest):
     except EmptyPage:
         envios = paginator.page(paginator.num_pages)
     return render(resquest, 'reporte/listaenvio.html', {'envios':envios,'proyectos':proyectos, 'asignaciones':asignaciones})
-#///////EXPORT PDF REPORTES
-def repersonal(resquest):
-    if not resquest.user.has_perm('admRrhh.view_personal'):
-        messages.error(resquest, "No tienes permiso para esta opcion, ponte en contacto con el administrador (TI).")
-        return redirect('grafana_etapas') 
 
-    personales = Personal.objects.filter(estado_perl = 1).order_by('-id_perl') 
-    personas = Persona.objects.all()
-    areas = Area.objects.all()
-    cargos = Cargo.objects.all()
-    estudios = Estudio.objects.all()
-    profesiones = Profesion.objects.all()
-    elementos_por_pagina = 15
+def repersonal(resquest):
+    personales = Personal.objects.filter(estado_perl = 1).order_by('-id_perl')
+
+    busqueda = resquest.GET.get("buscar")
+    if busqueda:
+        personales = Personal.objects.filter(
+            Q(persona_perl_nombre_per__icontains=busqueda)
+        ).distinct()
+    elementos_por_pagina = 12
     paginator = Paginator(personales, elementos_por_pagina)
     page = resquest.GET.get("page", 1)
-
     try:
-        personales = paginator.page(page)
+         personales = paginator.page(page)
     except PageNotAnInteger:
         personales = paginator.page(1)
     except EmptyPage:
         personales = paginator.page(paginator.num_pages)
-    return render(resquest, 'reporte/listapersonal.html', {'personales': personales, 'personas': personas, 'areas': areas, 'cargos': cargos, 'estudios': estudios, 'profesiones': profesiones})
+    return render(resquest, 'reporte/listapersonal.html', {'personales':personales})
 
+#///////EXPORT PDF REPORTES
 def repestacado_pdf2(resquest):
     datofech = datetime.now()
     asignaciones_inicio = repinicio(resquest)
@@ -1877,6 +1929,17 @@ def repenvio_pdf2(resquest):
     icon=  (settings.STATIC_URL,'img/logosercre.png')
     context = {'datofech': datofech, 'asignaciones': asignaciones,'envios': envios,'vacios': vacios,'icon': icon, 'user': resquest.user}
     template_path = 'reporte/listaenviopdf.html'
+    template = get_template(template_path)
+    html = template.render(context)
+    response = HttpResponse(content_type='application/pdf')
+    pisa.CreatePDF(html, dest=response, link_callback=link_callback)
+    return response
+def repersonal_pdf2(resquest):
+    datofech = datetime.now()
+    personales = Personal.objects.filter(estado_perl = 1).order_by('-id_perl')
+    icon=  (settings.STATIC_URL,'img/logosercre.png')
+    context = {'datofech': datofech, 'personales': personales,'icon': icon, 'user': resquest.user}
+    template_path = 'reporte/listapersonalpdf.html'
     template = get_template(template_path)
     html = template.render(context)
     response = HttpResponse(content_type='application/pdf')
@@ -1995,19 +2058,25 @@ def obtener_grupos_y_permisos():
     grupos = Group.objects.all()
     # Crear un diccionario para almacenar los grupos y sus permisos asociados
     grupos_con_permisos = {}
+    
     # Iterar sobre cada grupo para obtener sus permisos
     for grupo in grupos:
         # Obtener los permisos asociados a este grupo
         permisos = grupo.permissions.all()
         permisos_modificados = []
+        
         for permiso in permisos:
             nombre_permiso = permiso.codename
+            # Reemplazar prefijos en el nombre del permiso
             nombre_permiso = nombre_permiso.replace('add_', 'adicionar ')
             nombre_permiso = nombre_permiso.replace('change_', 'actualizar ')
             nombre_permiso = nombre_permiso.replace('delete_', 'eliminar ')
             nombre_permiso = nombre_permiso.replace('view_', 'vista ')
             permisos_modificados.append((nombre_permiso, permiso.id))
-            grupos_con_permisos[grupo] = permisos_modificados
+        
+        # Añadir el grupo y sus permisos modificados al diccionario
+        grupos_con_permisos[grupo] = permisos_modificados
+    
     return grupos_con_permisos
 def rolEliminar(resquest, id):
     # Obtener el grupo
@@ -2015,5 +2084,5 @@ def rolEliminar(resquest, id):
     grupo.delete()
     messages.success(resquest, "REGISTRO ELIMINADO")
     # Renderizar la plantilla con los datos actualizados
-    return render(resquest, 'rol/lista.html')
+    return redirect('rolLista')
 

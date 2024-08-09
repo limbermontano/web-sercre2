@@ -66,22 +66,32 @@
           </thead>
 
           <tbody>
+              {% for rol in roles_con_permisos %}
+              <tr>
+                  <td>{{ rol.grupo.name }}</td>
+                  <td>
+                      {% if rol.permisos %}
+                          {% for nombre_permiso, permiso_id in rol.permisos %}
+                              <span class="btn btn-success btn-sm d-inline-block mr-2 mb-2" style="color:darkslategray;">
+                                  {{ nombre_permiso }}
+                              </span>
+                          {% endfor %}
+                      {% else %}
+                          <span class="text-muted">Sin permisos</span>
+                      {% endif %}
+                  </td>
+                  <td style="float: right;">
+                      <a class="btn btn-primary btn-sm" href="{% url 'rolEditar' rol.grupo.id %}">
+                          <i class="fas fa-pen"></i>
+                      </a>
+                      |
+                      <a class="btn btn-danger btn-sm" href="#" onclick="eliminarRoles({{ rol.grupo.id }})">
+                          <i class="fas fa-trash"></i>
+                      </a>
+                  </td>
+              </tr>
+            {% endfor %}
           
-          {% for grupo, permisos in grupos_y_permisos.items %}
-            <tr>
-              <td>{{ grupo.name }}</td>
-              <td>
-                {% for nombre_permiso, permiso_id in permisos %}
-                <span class="btn btn-success btn-sm d-inline-block  mr-2 mb-2" style="color:darkslategray;">{{ nombre_permiso }}</span>
-                {% endfor %}
-              </td>
-              <td style="float: right">
-                <a class="btn btn-primary btn-sm" href="{% url 'rolEditar' grupo.id %}"><i class="fas fa-pen"></i></a>
-                |
-                <a class="btn btn-danger btn-sm" href="#" onclick="eliminarRoles({{ grupo.id }})"><i class="fas fa-trash"></i></a>
-              </td>
-            </tr>
-          {% endfor %}
           </tbody>
         </table>
 

@@ -58,7 +58,7 @@
           width="100%"
           cellspacing="0"
         >
-          <thead>
+          <thead style="text-align: center;">
             <tr>
               <th>Proyecto</th>
               <th>Ubicacion</th>
@@ -68,7 +68,7 @@
               <th style="text-align: right;">Acciones</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style="text-align: center;">
             {% for orden in ordenes %}
               {% if orden.estado_ord == 1 %}
                 {% for proyecto in proyectos %}
@@ -91,7 +91,7 @@
                           <a
                             class="btn btn-danger btn-sm"
                             href="#"
-                            onclick="eliminarOrden({{ orden.id_ord }})"
+                            onclick="eliminarOrdent({{ orden.id_ord }})"
                             ><i class="fas fa-trash"></i
                           ></a>
                         

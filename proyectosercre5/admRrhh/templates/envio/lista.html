@@ -3,7 +3,7 @@
 {% block encabezadofor %} Lista de proyectos enviados a C.R.E {% endblock  %}
 {% block js %}
 <script>
-  function eliminarFiscal(id) {
+  function eliminarEnvio(id) {
     Swal.fire({
       "title": "¿ Estas seguro que deseas Eliminar el Registro?",
       "text": "¡ No podras revertir esto!",
@@ -16,7 +16,7 @@
     })
     .then(function(result) {
       if (result.isConfirmed){ 
-        window.location.href="/envEliminar/" +id+ " "
+        window.location.href="/envEliminar/" +id+ " ";
       }
     })
     
@@ -58,20 +58,24 @@
           width="100%"
           cellspacing="0"
         >
-          <thead>
+          <thead style="text-align: center;">
             <tr>
               <th>Proyecto</th>
+              <th>Direccion</th>
+              <th>Fiscal CRE.</th>
               <th>Fecha envio</th>
               <th>Respaldo</th>
               <th>Nota</th>
               <th style="float: right">Acciones</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style="text-align: center;">
             {% for envio in envios %}
               
               <tr>
                 <td>{{envio.proyecto_env.nombre_proy}}</td>
+                <td>{{envio.proyecto_env.ubicacion_proy}}</td>
+                <td>{{envio.proyecto_env.fiscal_proy.nombre_fis}} {{envio.proyecto_env.fiscal_proy.apellidoP_fis}}</td>
                 <td>{{envio.fechaEnv_env}}</td>
                 <td>{% if envio.resplado_env %}Si{% else %}No{% endif %}</td>
                 <td>{{envio.nota_env }}</td>

@@ -1,7 +1,8 @@
 const formularios = {
     formulario1: {
         expresiones: {
-            nombre: /^[a-zA-ZÀ-ÿ\s]{1,20}$/
+            nombre: /^[a-zA-ZÀ-ÿ\.\s]{1,50}$/
+            
         },
         campos: {
             nombre: false
@@ -66,7 +67,7 @@ const formularios = {
     },
     formulario6: {
         expresiones: {
-            nota: /^([a-zA-Z0-9ñÑ.-]{1,70})?$/
+            nota: /^.{0,100}$/ 
             
         },
         campos: {
@@ -78,8 +79,8 @@ const formularios = {
         expresiones: {
             proyecto:/^[a-zA-Z0-9.-]{1,11}$/,
             grafo: /^\d{1,8}$/,
-            trafo: /^[a-zA-Z0-9-]{1,14}$/,
-            direccion: /^[a-zA-Z\d\s#_-]{0,100}$/
+            trafo: /^[a-zA-Z0-9-]{1,20}$/,
+            direccion: /^.{0,100}$/ 
         },
         campos: {
             proyecto: false,
@@ -124,6 +125,16 @@ const formularios = {
             nombre:/^[a-zA-Z0-9()\-_".,\s]{1,20}$/,
            
             
+        },
+        campos: {
+            nombre: false
+            
+        }
+    },
+    formulario12: {
+        expresiones: {
+            nombre:/^[a-zA-ZÀ-ÿ\-/.\s]{1,20}$/,
+ 
         },
         campos: {
             nombre: false

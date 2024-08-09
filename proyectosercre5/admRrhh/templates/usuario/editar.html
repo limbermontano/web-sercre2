@@ -2,7 +2,24 @@
 {% block encabezado %}Gestion usuario{% endblock %}
 {% block encabezadofor %}Formulario Editar Usuario {% endblock %}
 {% block contenido %}
-
+<script>
+  function eliminaruSeRol(id, id) {
+    Swal.fire({
+      title: "¿ Estas seguro que deseas Eliminar el Registro?",
+      text: "¡ No podras revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: true,
+      confirmButtonText: " Si, Eliminar ",
+      cancelButtonText: " Volver ",
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location.href = "/userRolEliminar/" + id + +id + " ";
+      }
+    });
+  }
+</script>
 <div class="card shadow mb-2">
   <div class="container py-2">
     <div class="row justify-content-center">
@@ -125,10 +142,13 @@
                     <td>{{usuario.username}}</td>
                     <td>{{grupo.name }}</td>
                     <td style="float: right">
-                      <form id="formulario10" method="post" action="{% url 'userRolEliminar' usuario.id grupo.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                      </form>
+                    <a
+                      class="btn btn-danger btn-sm"
+                      href="#"
+                      onclick="eliminaruSeRol({{ usuario.id grupo.id }})"
+                      ><i class="fas fa-trash"></i
+                    ></a>
+                      
                     </td>
                   </tr>
               {% endfor %}

@@ -2,6 +2,26 @@
 {% block encabezado %}Gestion proyecto{% endblock %}
 {% block encabezadofor %} Formulario de edicion {% endblock %}
 {% block contenido %}
+<script>
+  function eliminarAsignacion(id) {
+    Swal.fire({
+      "title": "¿ Estas seguro que deseas Eliminar la asignacion?",
+      "text": "¡ No podras revertir esto!",
+      "icon": "warning",
+      "showCancelButton": true,
+      "confirmButtonColor": "#d33",
+      "cancelButtonColor": true,
+      "confirmButtonText": " Si, Eliminar ", 
+      "cancelButtonText": " Cancelar ",      
+    })
+    .then(function(result) {
+      if (result.isConfirmed){ 
+        window.location.href="/asigEliminarD/" +id+ " "
+      }
+    })
+    
+  }
+</script> 
 <div class="card shadow mb-2">
   <div class="container py-2">
     <div class="row justify-content-center">
@@ -28,30 +48,30 @@
             <label for="exampleFormControlInput1" class="form-label">Proyecto</label>
             <input type="text" class="text-uppercase form-control" name="nombre_proy" id="proyecto" value="{{ codigo.nombre_proy}}" placeholder=""required>
             <i class="formulario__validacion-estado fas fa-times-circle"></i>
-            <p class="formulario__input-error">11 caracteres menos simbolos y espacios</p>
+            <p class="formulario__input-error">El campo no permite ese dato y solo puede contener 11 digitos</p>
           </div>
           <div class="col-sm-2"id="grupo__grafo">
             <label for="exampleFormControlInput1" class="form-label">Grafo</label>
             <abbr class='fas fa-question-circle' title="Numero unico de registro que el cliente CRE., lo crea."></abbr>
             <input type="text" class="text-uppercase form-control" name="grafo_proy" id="grafo" value="{{ codigo.grafo_proy}}" placeholder=""required>
             <i class="formulario__validacion-estado fas fa-times-circle"></i>
-            <p class="formulario__input-error">El campo solo puede contener números</p>
+            <p class="formulario__input-error">El campo no permite ese dato y solo puede contener números</p>
           </div>
           <div class="col-sm-2"id="grupo__trafo">
             <label for="exampleFormControlInput1" class="form-label">Transformador de Ref.</label>
             <abbr class='fas fa-question-circle' title="Es la placa de los transformadores de luz que tienen como referencia el municipo y la Uv. en la que se encuentran instalados."></abbr>
             <input type="text" class="text-uppercase form-control" name="trafo_proy" id="trafo"  value="{{ codigo.trafo_proy}}"placeholder="">
             <i class="formulario__validacion-estado fas fa-times-circle"></i>
-            <p class="formulario__input-error">El campo solo puede contener máximo 16 dígitos</p>
+            <p class="formulario__input-error">El campo no permite ese dato y solo puede contener máximo 20 dígitos</p>
           </div>
           <div class="col-sm-2">
-            <label for="exampleFormControlInput1" class="form-label">Fecha Creacion</label>
-            <abbr class='fas fa-question-circle' title="Es la fecha de creacion del proyecto por parte del cliente CRE."></abbr>
+            <label for="exampleFormControlInput1" class="form-label">Fecha Creación-CRE</label>
+            <abbr class='fas fa-question-circle' title="Fecha de creación del proyecto que genera el cliente CRE."></abbr>
             <input type="date" class="text-uppercase form-control" name="fechaRecep_proy" value="{{ codigo.fechaRecep_proy}}"placeholder=""required>
           </div>
           <div class="col-sm-2">
-            <label for="exampleFormControlInput1" class="form-label">Fecha Diseño</label>
-            <abbr class='fas fa-question-circle' title="Es la fecha Limite que genera el cliente CRE. Para su diseño del proyecto."></abbr>
+            <label for="exampleFormControlInput1" class="form-label">Fecha Diseño-Aprox.</label>
+            <abbr class='fas fa-question-circle' title="Fecha límite que asigna el cliente CRE. para el diseño del proyecto."></abbr>
             <input type="date" class="text-uppercase form-control" name="fechaDisen_proy" value="{{ codigo.fechaDisen_proy}}"placeholder=""required>
           </div>
         </div>
@@ -59,7 +79,7 @@
         <div class="row">
           <div class="col-sm-2">
             <label for="exampleFormControlInput1" class="form-label">Fecha Construccion.</label>
-            
+            <abbr class="fas fa-question-circle" title="Fecha límite aproximado que asigna el cliente CRE. para la ejecucion del proyecto."></abbr>
             <input type="date" class="text-uppercase form-control" name="fechaConst_proy" value="{{ codigo.fechaConst_proy}}"placeholder=""required>
           </div>
           <div class="col-sm-5">
@@ -72,7 +92,7 @@
             
             <input type="text" class="text-uppercase form-control" name="ubicacion_proy" id="direccion" value="{{ codigo.ubicacion_proy}}"placeholder=""required>
             <i class="formulario__validacion-estado fas fa-times-circle"></i>
-            <p class="formulario__input-error">El campo solo puede contener máximo 100 caracteres</p>
+            <p class="formulario__input-error">El campo no permite ese dato y solo puede contener máximo 100 caracteres</p>
           </div>
         </div>
         <br>
@@ -97,7 +117,7 @@
     <div class="col-sm-2">
       <label class="form-label">Cargo personal</label>
       <abbr class='fas fa-question-circle' title="Los cargos del personal que intervienen en el proyecto."></abbr>
-      <select name="proyecto" id="cargo" class="form-control" required>
+      <select name="proyecto" id="cargo" class="form-control">
           <option value="">Seleccione el cargo</option>
           {% for cargo in cargos %}
               <option value="{{ cargo.id_carg }}">{{ cargo.nombre_carg }}</option>
@@ -170,12 +190,7 @@
                     <td>{{asignacion.fechaIni_asig}}</td>
                     <td>{{asignacion.nota_asig }}</td>
                     <td style="float: right">
-                      <form method="post" id="formulario6" action="{% url 'asigEliminarD' asignacion.id_asig %}">
-                        {% csrf_token %}
-                        
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        
-                      </form>
+                      <a class="btn btn-danger btn-sm " href="#" onclick="eliminarAsignacion({{ asignacion.id_asig }})"><i class="fas fa-trash"></i></a>
                     </td>
                   </tr>
               {% endif %}

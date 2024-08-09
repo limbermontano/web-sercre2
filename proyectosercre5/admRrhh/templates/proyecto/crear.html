@@ -30,14 +30,14 @@
             <label class="form-label">Proyecto</label>
             <input type="text" class="form-control text-uppercase" name="nombre_proy" id="proyecto" placeholder="" required>
             <i class="formulario__validacion-estado fas fa-times-circle"></i>
-            <p class="formulario__input-error">11 caracteres menos simbolos y espacios</p>
+            <p class="formulario__input-error">El campo no permite ese dato y solo puede contener 11 digitos</p>
           </div>
           <div class="col-sm-3" id="grupo__grafo">
             <label class="form-label">Grafo</label>
             <abbr class="fas fa-question-circle" title="Número único de registro que el cliente CRE crea."></abbr>
             <input type="number" class="form-control text-uppercase" name="grafo_proy" id="grafo" placeholder="" required>
             <i class="formulario__validacion-estado fas fa-times-circle"></i>
-            <p class="formulario__input-error">El campo solo puede contener números</p>
+            <p class="formulario__input-error">El campo no permite ese dato y solo puede contener números</p>
           </div>
         </div>
         <br>
@@ -47,20 +47,21 @@
             <abbr class="fas fa-question-circle" title="Es la placa de los transformadores de luz que tienen como referencia el municipio y la Uv. en la que se encuentran instalados."></abbr>
             <input type="text" class="form-control text-uppercase" name="trafo_proy" id="trafo" placeholder="">
             <i class="formulario__validacion-estado fas fa-times-circle"></i>
-            <p class="formulario__input-error">El campo solo puede contener máximo 16 dígitos</p>
+            <p class="formulario__input-error">El campo no permite ese dato y solo puede contener máximo 20 dígitos</p>
           </div>
           <div class="col-sm-3">
             <label class="form-label">Fecha Creación-CRE</label>
-            <abbr class="fas fa-question-circle" title="Es la fecha de creación del proyecto por parte del cliente CRE. Para luego asignarlo."></abbr>
+            <abbr class="fas fa-question-circle" title="Fecha de creación del proyecto que genera el cliente CRE."></abbr>
             <input type="date" class="form-control text-uppercase" name="fechaRecep_proy" required>
           </div>
           <div class="col-sm-3">
             <label class="form-label">Fecha Diseño-Aproximado</label>
-            <abbr class="fas fa-question-circle" title="Es la fecha límite que genera el cliente CRE para el diseño del proyecto."></abbr>
+            <abbr class="fas fa-question-circle" title="Fecha límite que asigna el cliente CRE. para el diseño del proyecto."></abbr>
             <input type="date" class="form-control text-uppercase" name="fechaDisen_proy" required>
           </div>
           <div class="col-sm-3">
             <label class="form-label">Fecha Construcción</label>
+            <abbr class="fas fa-question-circle" title="Fecha límite aproximado que asigna el cliente CRE. para la ejecucion del proyecto."></abbr>
             <input type="date" class="form-control text-uppercase" name="fechaConst_proy" required>
           </div>
         </div>
@@ -75,7 +76,7 @@
             <label class="form-label">Ubicación</label>
             <input type="text" maxlength="100" class="form-control text-uppercase" name="ubicacion_proy" id="direccion" title="Máximo 100 caracteres" placeholder="" required>
             <i class="formulario__validacion-estado fas fa-times-circle"></i>
-            <p class="formulario__input-error">El campo solo puede contener máximo 100 caracteres</p>
+            <p class="formulario__input-error">El campo no permite ese dato y solo puede contener máximo 100 caracteres</p>
           </div>
         </div>
         <br>

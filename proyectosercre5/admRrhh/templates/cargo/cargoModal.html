@@ -1,8 +1,9 @@
+ates/areaModal.html -->
 <div id="cargoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cargoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">REGISTRO DE CARGOS</h4>
+                <h4 class="modal-title">REGISTRO DE CARGO</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -14,7 +15,7 @@
                         <div class="row mb-3" id="grupo__nombre">
                             <div class="col-sm-12">
                                 <label for="nombre">Nombre cargo</label>
-                                <input type="text" class="text-uppercase form-control" name="nombre_carg" id="nombre" placeholder="Nombre del cargo" required>
+                                <input type="text" class="text-uppercase form-control" name="nombre_carg" id="nombre" placeholder="Nombre del área" required>
                                 <i class="formulario__validacion-estado fas fa-times-circle"></i>
                                 <p class="formulario__input-error">El campo solo puede contener letras</p>
                             </div>
@@ -55,7 +56,8 @@ function guardarDatosYCerrarModal() {
 }
 
 // Si prefieres abrir el modal desde un botón fuera del modal
-$('#abrirModalArea').click(function() {
+$('#abrirModalCargo').click(function() {
     $('#cargoModal').modal('show');
 });
 </script>
+

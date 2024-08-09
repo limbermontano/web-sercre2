@@ -11,7 +11,7 @@
                 <div class="row justify-content-center">
                     <form id="formulario1" method="POST" action="{% url 'profGuardarM' %}">
                         {% csrf_token %}
-                        <div class="row mb-3" id="grupo__nombre">
+                        <div class="row" id="grupo__nombre">
                             <div class="col-sm-12">
                                 <label for="nombre">Nombre profesion</label>
                                 <input type="text" class="text-uppercase form-control" name="nombre_prof" id="nombre" placeholder="Nombre de la profesion" required>

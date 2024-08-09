@@ -1,20 +1,15 @@
 
 from django.urls import path
 from django.conf import settings
-# from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import static
 from . import views
 from .views import user_login
-# from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('',views.iniciar, name='iniciar' ),
     path('base/',views.base, name='base' ),
     path('grafana_etapas',views.grafana_etapas, name='grafana_etapas' ),
-    # path('login_view',views.login_view, name='login_view' ),
-    # path('login', auth_views.LoginView.as_view(), name='login'),
     path('logout_view', views.logout_view, name='logout_view'),
     path('login/', user_login, name='login'),
-    # path('loginus', views.loginus, name='loginus'),
     #/////AREA
     path('areLista',views.areLista, name='areLista'),
     path('areCrear',views.areCrear, name='areCrear'),
@@ -52,11 +47,13 @@ urlpatterns = [
     path('profEliminar/<int:id>',views.profEliminar, name='profEliminar'),
         #/////PERSONA
     path('perLista',views.perLista, name='perLista'),
+    path('perLista_noactivo',views.perLista_noactivo, name='perLista_noactivo'),
     path('perCrear',views.perCrear, name='perCrear'),
     path('perGuardar',views.perGuardar, name='perGuardar'),
     path('perEditar/<int:id>',views.perEditar, name='perEditar'),
     path('perActualizar/<int:id>',views.perActualizar, name='perActualizar'),
     path('perEliminar/<int:id>',views.perEliminar, name='perEliminar'),
+    path('perActivar/<int:id>',views.perActivar, name='perActivar'),
     path('perTarjeta/<int:id>',views.perTarjeta, name='perTarjeta'),
          #/////PERSONAL
     path('perlLista',views.perlLista, name='perlLista'),
@@ -156,7 +153,7 @@ urlpatterns = [
     path('rolActualizar/<int:id>',views.rolActualizar, name='rolActualizar'),
     path('rolEliminar/<int:id>',views.rolEliminar, name='rolEliminar'),
     path('permDetalle/<int:id>',views.permDetalle, name='permDetalle'),
-    path('rolPermEliminar/<int:grupo_id>/<int:permiso_id>/>',views.rolPermEliminar, name='rolPermEliminar'),
+    path('rolPermEliminar/<int:grupo_id>/<int:permiso_id>',views.rolPermEliminar, name='rolPermEliminar'),
         #////////////////REPORTES
     path('reproyLista',views.reproyLista, name='reproyLista'),
     path('repListapdf',views.repListapdf, name='repListapdf'),
@@ -170,6 +167,7 @@ urlpatterns = [
         #///REPORTES PDF
     path('repestacado_pdf2', views.repestacado_pdf2, name="repestacado_pdf2" ),
     path('repenvio_pdf2', views.repenvio_pdf2, name="repenvio_pdf2" ),
+    path('repersonal_pdf2', views.repersonal_pdf2, name="repersonal_pdf2" ),
     path('export-pdf1/<int:id>', views.export_pdf1, name="export-pdf1" ),
     path('proyListapdf/<int:id>',views.proyListapdf, name='proyListapdf'),
     #/////MODALES

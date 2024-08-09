@@ -12,18 +12,18 @@
             <div class="col-sm-4">
               <label for="exampleFormControlInput1" class="form-label">Usuario</label>
               <select name="persona_usu"  class="form-control" required >
-              <option value="">-Seleccione-</option>
-                  {% for personal in personales %}
-                    
-                    <option value="{{personal.persona_perl.nombre_per }} {{personal.persona_perl.apellidoP_per }} ">{{personal.persona_perl.nombre_per }} {{personal.persona_perl.apellidoP_per }}</option>
-                    
-                  {% endfor %}
+                <option value="">-Seleccione-</option>
+                {% for personal in resultados %}
+                <option value="{{ personal.persona_perl.nombre_per }} {{ personal.persona_perl.apellidoP_per }}">
+                    {{ personal.persona_perl.nombre_per }} {{ personal.persona_perl.apellidoP_per }}
+                </option>
+                {% endfor %}
               </select>
             </div> 
             <div class="col-sm-4">
               <label  class="form-label">Password</label>
               <i class="far fa-eye-slash" id="togglePassword"></i>
-              <input type="password" class="form-control" name="password_usu" id="password" placeholder="">
+              <input type="password" class="form-control" name="password_usu" id="password" placeholder="contraseña">
             </div>
             <div class="col-sm-4"id="grupo__usuario">
               <label  class="form-label">E-mail</label>

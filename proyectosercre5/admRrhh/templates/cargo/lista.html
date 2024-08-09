@@ -76,7 +76,7 @@
                   <td>{{cargo.nombre_carg}}</td>
                   <td style="text-align: right;">
                  
-                      <a class="btn btn-primary btn-sm " href="{% url 'cargEditar', cargo.id_carg %}"><i class="fas fa-pen"></i></a>
+                      <a class="btn btn-primary btn-sm " href="{% url 'cargEditar' cargo.id_carg %}"><i class="fas fa-pen"></i></a>
                       |
                       <a class="btn btn-danger btn-sm " href="#" onclick="eliminarCargo('{{ cargo.id_carg }}')"><i class="fas fa-trash"></i></a>
                     
